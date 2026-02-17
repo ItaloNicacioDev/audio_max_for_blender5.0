@@ -110,21 +110,20 @@ def dependencias_instaladas():
 def _get_sequences_collection(seq):
     """
     Return a sequences iterable compatible with multiple Blender versions.
-    Prefer sequences_all if available (older API), otherwise sequences.
+    Prefer strips_all if available, otherwise strips.
+    sequences_all and sequences are for compatibility with older Blender versions
     """
     if not seq:
         return []
+    if hasattr(seq, "strips_all"):
+        return seq.strips_all
+    if hasattr(seq, "strips"):
+        return seq.strips
     if hasattr(seq, "sequences_all"):
-        try:
-            return seq.sequences_all
-        except Exception:
-            pass
+        return seq.sequences_all
     if hasattr(seq, "sequences"):
-        try:
-            return seq.sequences
-        except Exception:
-            pass
-    # fallback: try to iterate attributes
+        return seq.sequences
+    print("Could not find strips or sequences attribute on Sequence Editor")
     return []
 
 def get_all_sound_strips(scene):
