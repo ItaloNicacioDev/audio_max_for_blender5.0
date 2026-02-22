@@ -113,7 +113,7 @@ Distribuído sob a licença MIT. Você pode usar, modificar e distribuir livreme
 
 ## 👤 Autor
 
-Desenvolvido por **Ítalo Nicacio**.  
+Desenvolvido por **Italo Nicacio**.  
 Sugestões e issues são bem-vindas no repositório.
 
 ---
