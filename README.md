@@ -1,176 +1,121 @@
-# audio_max_for_blender5.0
-Audio Max é um addon avançado para o Blender 5.0+ que adiciona processamento profissional de áudio diretamente no Video Sequence Editor (VSE), permitindo aplicar efeitos externos via plugins VST, automatizar volumes, organizar trilhas e oferecer ferramentas de mixagem dentro do Blender.
+# Audio Max for Blender 5.0
 
-Este projeto foi criado para resolver a limitação nativa do Blender, que não possui suporte interno a VSTs, e expandir suas capacidades de edição de áudio para um nível realmente profissional.
+Audio Max é um addon avançado para o Blender 5.0+ que adiciona processamento profissional de áudio diretamente no Video Sequence Editor (VSE), permitindo converter, exportar e enviar áudio para DAWs externas sem sair do Blender.
 
--------------------------------------------------
-Recursos principais
--------------------------------------------------
-🔊 Aplicação de efeitos VST externos (via FFmpeg ou host externo)
--------------------------------------------------
-🎚 Rack de efeitos por faixa
--------------------------------------------------
-🎛 Mixer completo com volume, pan e mute
--------------------------------------------------
-🎯 Seleção inteligente da faixa de áudio
--------------------------------------------------
-🔁 Exportação automática para WAV processado
--------------------------------------------------
-⚙️ Suporte para caminhos customizados de VSTs (VST2/VST3)
--------------------------------------------------
-🧩 Interface integrada no VSE
--------------------------------------------------
-🔄 Compatível com Blender 5.0+ (API atualizada)
----------------------------------------
-🖥️ Requisitos
+---
 
-Blender 5.0 ou superior (versão Steam suportada)
+## ✅ Recursos atuais
 
-FFmpeg instalado e presente no PATH
+- 🔊 **Conversão de áudio do VSE** — extrai o áudio mixado da timeline e exporta em WAV ou MP3
+- 🎯 **Detecção automática de canal livre** — o áudio exportado é inserido de volta no VSE no primeiro canal disponível, sem sobrescrever vídeo ou outros strips
+- 🎛 **Envio para DAW** — detecta automaticamente DAWs instaladas no sistema e abre o arquivo exportado diretamente nelas
+- 🔍 **Detecção automática de DAWs** — suporta Reaper, FL Studio, Ableton, Ardour, Bitwig, Audacity, Carla e outros
+- 📂 **Browse manual de DAW** — caso a DAW não seja detectada, é possível selecionar o executável manualmente
+- 🧩 **Interface integrada no VSE** — painel lateral acessível via Sidebar (N) → aba AudioMax
+- 🔄 **Compatível com Blender 5.0+** — API completamente atualizada (`strips_all`, `bpy.ops.sound.mixdown()`)
 
-Plugins VST2 ou VST3 compatíveis
+---
 
-Windows 10/11 (testado)
-----------------------------------------
+## 🖥️ Requisitos
 
-📦 Instalação
-1. Baixe o addon
+- Blender 5.0 ou superior (incluindo versão Steam)
+- Windows 10/11 (testado)
+- DAW opcional para receber o áudio exportado
 
-Baixe o arquivo ZIP do repositório:
+---
 
-AudioMax.zip
-2. Instale no Blender
+## 📦 Instalação
 
-Abra Edit → Preferences → Add-ons
+1. Baixe o arquivo ZIP do repositório
+2. No Blender: **Edit → Preferences → Add-ons → Install**
+3. Selecione o ZIP e ative o addon
+4. O painel aparecerá no VSE: **Sidebar (N) → aba AudioMax**
 
-Clique em Install
+---
 
-Selecione o ZIP
+## 🎚 Como usar
 
-Ative o addon
+### Converter áudio do VSE
+1. Adicione um vídeo (com áudio) na timeline do VSE
+2. Abra o painel **AudioMax** no Sidebar
+3. Clique em **Convert Audio from VSE**
+4. Escolha o formato (WAV ou MP3)
+5. O áudio será exportado e adicionado automaticamente ao VSE no primeiro canal livre
 
-3. Configuração inicial
+### Enviar para DAW
+1. Após converter, o addon pergunta se deseja enviar para uma DAW
+2. DAWs detectadas automaticamente aparecem como botões
+3. Caso sua DAW não apareça, use **Browse for DAW** para selecionar manualmente o executável
 
-Abra o menu de preferências do addon:
+---
 
-Edit → Preferences → Add-ons → Audio Max
+## 📂 Estrutura do projeto
 
-Configure:
-
-Caminho do FFmpeg (se necessário)
-
-Pasta onde ficam seus plugins VST
-
-Pasta temporária para render
--------------------------------------------------
-🎚 Usando o plugin no VSE
-1. Selecione uma faixa de áudio
-
-Selecione no VSE a faixa que receberá o efeito. Apenas 1 deve estar selecionada.
-
-2. Abra o painel do Audio Max
-
-Localizado no canto direito do VSE:
-
-Sidebar (N) → Aba "Audio Max"
-3. Aplique efeitos
-
-No painel você pode:
-
-Adicionar efeitos VST
-
-Editar parâmetros
-
-Processar o áudio
-
-Gerar um novo WAV tratado
----------------------------------------------------
-🛠 Comandos internos do Addon
-Selecionar faixa de áudio automaticamente
-
-O painel possui um botão:
-
-Selecionar faixa de áudio
-
-Ele detecta a primeira faixa SOUND e seleciona automaticamente.
-
-Processar com VST
-
-Ao clicar em Processar áudio, o addon:
-
-Exporta o strip selecionado para WAV
-
-Envia o arquivo ao host VST configurado
-
-Gera o áudio tratado
-
-Retorna automaticamente para o VSE
------------------------------------------
-📂 Estrutura do Projeto
+```
 audio_max/
-│
-├── __init__.py      # Addon principal
-├── ops/              # Operadores
-├── ui/               # Painéis, menus e layout
-├── utils/            # Funções auxiliares
-└── docs/             # Documentação
+├── __init__.py           # Registro do addon
+├── core/
+│   ├── audio_export.py   # Exportação de áudio e inserção no VSE
+│   └── global_cache.py   # Cache de DAWs detectadas
+├── ui/
+│   ├── operators.py      # Operadores dos botões
+│   └── panels.py         # Painéis da interface
+├── external/
+│   ├── daw_detector.py   # Detecção automática de DAWs
+│   └── host_priority.py  # Ordenação por prioridade de DAW
+└── utils/
+    ├── paths.py          # Caminhos e diretórios temporários
+    ├── logging.py        # Sistema de log interno
+    └── system_info.py    # Informações do sistema
+```
 
-----------------------------------------
-⚠️ Problemas comuns
-O Audio Max não aparece no VSE
+---
 
-Certifique-se de que:
+## 🔧 Correções e melhorias — Blender 5.0
 
-Está no Video Sequencer
+| Problema | Correção |
+|----------|----------|
+| `sequences` / `sequences_all` não existem mais | Migrado para `strips` / `strips_all` |
+| `bpy.ops.render.render()` não exporta áudio | Substituído por `bpy.ops.sound.mixdown()` |
+| Circular import ao carregar o addon | Lazy import de `audio_export` dentro do `execute()` |
+| Import desnecessário de `daw_detector` no `__init__.py` | Removido — detecção ocorre via `global_cache` |
+| `AUDIOMAX_PT_MainPanel` nunca aparecia no VSE | Adicionado ao `PANEL_CLASSES` |
+| Painel duplicado no SEQUENCE_EDITOR | `AUDIOMAX_PT_Sequencer` removido |
+| Ícone `CHECKMARK` inválido no Blender 4.x/5.0 | Substituído por `CHECKBOX_HLT` |
+| Áudio exportado não voltava ao VSE | Adicionado `_add_audio_to_vse()` com canal automático |
 
-O painel lateral está aberto (tecla N)
+---
 
-O addon está ativo
+## 🗺️ Roadmap
 
-O processamento não funciona
+- [ ] Suporte a FLAC e OGG na interface do painel
+- [ ] Equalizador nativo por faixa
+- [ ] Monitor de loudness
+- [ ] Suporte a macOS e Linux
+- [ ] Pré-visualização de efeito ao vivo
 
-Verifique:
+---
 
-FFmpeg instalado
+## 🤝 Contribuindo
 
-Caminho do VST correto
+Pull Requests são bem-vindos! Antes de enviar:
+- Teste no Blender 5.0+
+- Descreva claramente o que foi alterado
+- Mantenha compatibilidade com Windows
 
-Permissões de pasta
------------------------------------------------
-🧩 Roadmap
+---
 
-Suporte a múltiplos formatos de áudio
+## 📜 Licença
 
-Rack com reorder drag & drop
+Distribuído sob a licença MIT. Você pode usar, modificar e distribuir livremente.
 
-Monitor de loudness
+---
 
-Equalizador nativo
+## 👤 Autor
 
-Pré-visualização de efeito ao vivo
+Desenvolvido por **Ítalo Nicacio**.  
+Sugestões e issues são bem-vindas no repositório.
 
-Suporte a macOS e Linux
--------------------------------------------------
-🤝 Contribuindo
+---
 
-Pull Requests são bem-vindos!
-Antes de enviar, por favor:
-
-Teste no Blender 5.0+
-
-Descreva claramente o que foi alterado
-
-Mantenha compatibilidade com Windows
--------------------------------------------------
-📜 Licença
-
-Este projeto é distribuído sob a licença MIT.
-Você pode usar, modificar e distribuir livremente.
--------------------------------------------------
-👤 Autor
-
-Desenvolvido por Ítalo Nicacio.
-
-Se tiver sugestões, melhorias ou quiser integrar novos efeitos, basta abrir uma Issue.
--------------------------------------------------
-🎧 Aproveite o poder dos VSTs dentro do Blender!
+🎧 *Aproveite o processamento de áudio profissional dentro do Blender!*
