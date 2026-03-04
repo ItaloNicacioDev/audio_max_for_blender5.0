@@ -119,3 +119,8 @@ Sugestões e issues são bem-vindas no repositório.
 ---
 
 🎧 *Aproveite o processamento de áudio profissional dentro do Blender!*
+
+## DAW COMPLETA
+https://github.com/ItaloNicacioDev/DAW_for_Blender
+
+
