@@ -1,0 +1,13 @@
+This product includes FFmpeg.
+
+FFmpeg is a free software project licensed under the GNU General Public License (GPL) version 2 or later,
+or the GNU Lesser General Public License (LGPL) version 2.1 or later,
+depending on the build configuration.
+
+FFmpeg source code can be obtained from:
+https://ffmpeg.org/
+
+This software uses FFmpeg binaries that are distributed separately
+and are not part of the proprietary code of this addon.
+
+FFmpeg is Copyright (c) the FFmpeg developers.
